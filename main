@@ -1,0 +1,35 @@
+
+import speech_recognition as sr
+from gtts import gTTS
+import os
+
+def transcribe_audio(file_path):
+    recognizer = sr.Recognizer()
+    with sr.AudioFile(file_path) as source:
+        audio = recognizer.record(source)
+    try:
+        return recognizer.recognize_google(audio)
+    except:
+        return "Could not understand audio."
+
+def generate_response(prompt):
+    # محاكاة استجابة LLM (يمكن استخدام Cohere أو OpenAI API)
+    return f"You said: {prompt}. Here's a simulated LLM response."
+
+def text_to_speech(text, output_file="response.mp3"):
+    tts = gTTS(text)
+    tts.save(output_file)
+
+if __name__ == "__main__":
+    audio_file = "input.wav"  # ضع ملف صوتي باسم input.wav
+    print("🔊 Transcribing audio...")
+    text = transcribe_audio(audio_file)
+    print("📝 Transcribed:", text)
+
+    print("🧠 Generating LLM response...")
+    response = generate_response(text)
+    print("💬 Response:", response)
+
+    print("🎧 Converting response to audio...")
+    text_to_speech(response)
+    print("✅ Done. Check 'response.mp3'")
